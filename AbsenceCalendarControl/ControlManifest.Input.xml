@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="purel" constructor="AbsenceCalendarV4" version="1.0.3" display-name-key="AbsenceCalendarV4" description-key="Absence Calendar V4" control-type="virtual" >
+    <external-service-usage enabled="false">
+    </external-service-usage>
+
+    <!-- Output properties (6) -->
+    <property name="selectedEmployeeId"    display-name-key="Selected_Employee"    of-type="SingleLine.Text" usage="output" />
+    <property name="selectedStartDate"     display-name-key="Selected_Start_Date"  of-type="SingleLine.Text" usage="output" />
+    <property name="selectedEndDate"       display-name-key="Selected_End_Date"    of-type="SingleLine.Text" usage="output" />
+    <property name="selectedAbsenceType"   display-name-key="Selected_Type"        of-type="SingleLine.Text" usage="output" />
+    <property name="selectedAction"        display-name-key="Selected_Action"      of-type="SingleLine.Text" usage="output" />
+    <property name="selectedRecordId"      display-name-key="Selected_Record_Id"   of-type="SingleLine.Text" usage="output" />
+
+    <!-- Dataset 1: Absence records -->
+    <data-set name="absenceDataSet" display-name-key="Absence_Dataset">
+      <property-set name="absenceEntryId"   display-name-key="Absence_Entry_ID"  of-type="SingleLine.Text"        usage="bound" required="true" />
+      <property-set name="employeeId"       display-name-key="Employee_ID"       of-type="SingleLine.Text"        usage="bound" required="true" />
+      <property-set name="employeeName"     display-name-key="Employee_Name"     of-type="SingleLine.Text"        usage="bound" required="true" />
+      <property-set name="absenceType"      display-name-key="Absence_Type"      of-type="SingleLine.Text"        usage="bound" required="true" />
+      <property-set name="dteDateStart"     display-name-key="Start_Date"        of-type="SingleLine.Text"        usage="bound" required="true" />
+      <property-set name="dteDateEnd"       display-name-key="End_Date"          of-type="SingleLine.Text"        usage="bound" required="true" />
+    </data-set>
+
+    <!-- Dataset 2: Employee master data -->
+    <data-set name="employeeDataSet" display-name-key="Employee_Dataset">
+      <property-set name="empId"                 display-name-key="Employee_ID"              of-type="SingleLine.Text" usage="bound" required="true" />
+      <property-set name="empName"               display-name-key="Employee_Name"            of-type="SingleLine.Text" usage="bound" required="true" />
+      <property-set name="strEmployeeNumber"     display-name-key="Employee_Number"          of-type="SingleLine.Text" usage="bound" required="false" />
+    </data-set>
+
+    <!-- Dataset 3: Vacation allowance -->
+    <data-set name="vacationDataSet" display-name-key="Vacation_Dataset_Display_Key">
+      <property-set name="vacEmployeeId"      display-name-key="Vac_Employee_Id"    of-type="SingleLine.Text" usage="bound" required="true" />
+      <property-set name="vacYear"            display-name-key="Vac_Year"           of-type="Whole.None"      usage="bound" required="true" />
+      <property-set name="vacAllowanceDays"   display-name-key="Vac_Allowance_Days" of-type="FP"              usage="bound" required="true" />
+      <property-set name="vacCarriedOverDays" display-name-key="Vac_Carried_Over"   of-type="FP"              usage="bound" required="false" />
+    </data-set>
+
+    <resources>
+      <code path="index.ts" order="1"/>
+      <platform-library name="React" version="16.14.0" />
+    </resources>
+  </control>
+</manifest>

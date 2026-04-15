@@ -1,0 +1,6 @@
+employeeName,employeeId,absenceType,startDate,endDate
+Thomas Müller,P-1001,Urlaub,2026-03-10,2026-03-14
+Anna Schmidt,P-1002,Krank,2026-03-11,2026-03-11
+Lisa Fischer,P-1004,Urlaub,2026-03-17,2026-03-21
+Klaus Wagner,P-1007,Krank,2026-03-12,2026-03-12
+Stefan Braun,P-1005,Sonderurlaub,2026-03-18,2026-03-19
