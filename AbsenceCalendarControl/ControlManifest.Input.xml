@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="purel" constructor="AbsenceCalendarV4" version="1.0.3" display-name-key="AbsenceCalendarV4" description-key="Absence Calendar V4" control-type="virtual" >
+  <control namespace="purel" constructor="AbsenceCalendarV4" version="1.0.4" display-name-key="AbsenceCalendarV4" description-key="Absence Calendar V4" control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
 
-    <!-- Output properties (6) -->
+    <!-- Output properties (7) -->
     <property name="selectedEmployeeId"    display-name-key="Selected_Employee"    of-type="SingleLine.Text" usage="output" />
     <property name="selectedStartDate"     display-name-key="Selected_Start_Date"  of-type="SingleLine.Text" usage="output" />
     <property name="selectedEndDate"       display-name-key="Selected_End_Date"    of-type="SingleLine.Text" usage="output" />
     <property name="selectedAbsenceType"   display-name-key="Selected_Type"        of-type="SingleLine.Text" usage="output" />
     <property name="selectedAction"        display-name-key="Selected_Action"      of-type="SingleLine.Text" usage="output" />
     <property name="selectedRecordId"      display-name-key="Selected_Record_Id"   of-type="SingleLine.Text" usage="output" />
+    <!-- Always-changing token — guarantees OnChange fires even for repeated same-action events -->
+    <property name="selectedEventId"       display-name-key="Selected_Event_Id"    of-type="SingleLine.Text" usage="output" />
 
     <!-- Dataset 1: Absence records -->
     <data-set name="absenceDataSet" display-name-key="Absence_Dataset">

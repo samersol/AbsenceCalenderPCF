@@ -633,17 +633,11 @@ export const AbsenceCalendar: React.FC<IAbsenceCalendarProps> = ({
   const handleAddConfirm = React.useCallback(() => {
     if (!pendingAdd) return;
     const { empId, startDate: sd, endDate: ed } = pendingAdd;
-    const tempId = "temp_" + Date.now();
 
-    // Optimistic: add to local
-    const newEntry: AbsenceEntry = {
-      absenceEntryId: tempId,
-      employeeId: empId,
-      absenceType: activeTyp,
-      dteDateStart: sd,
-      dteDateEnd: ed,
-    };
-    setLocalAbsences((prev) => [...prev, newEntry]);
+    // No optimistic local add here: temp IDs can never match real Dataverse
+    // GUIDs, which causes a brief double-render when the Canvas App refreshes.
+    // Instead we close the modal immediately and let the Canvas App Patch +
+    // Refresh cycle push the real record back into the dataset.
 
     // Notify Power Apps
     onInteraction({
@@ -652,7 +646,7 @@ export const AbsenceCalendar: React.FC<IAbsenceCalendarProps> = ({
       startDate: sd,
       endDate: ed,
       absenceType: activeTyp,
-      recordId: tempId,
+      recordId: "",
     });
 
     showToast("Abwesenheit eingetragen");
@@ -772,13 +766,14 @@ export const AbsenceCalendar: React.FC<IAbsenceCalendarProps> = ({
     [mode, dragState, dragRange, dayStrings, empNameById, showToast]
   );
 
-  // Cancel drag on global mouseup
+  // Cancel drag on global mouseup — use window instead of document to work
+  // correctly when the PCF is hosted inside a Canvas App iframe.
   React.useEffect(() => {
     const handler = () => {
       setDragState(null);
     };
-    document.addEventListener("mouseup", handler);
-    return () => document.removeEventListener("mouseup", handler);
+    window.addEventListener("mouseup", handler);
+    return () => window.removeEventListener("mouseup", handler);
   }, []);
 
   // ── Render ─────────────────────────────────────────────────────────────

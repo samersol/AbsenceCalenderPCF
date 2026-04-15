@@ -54,6 +54,9 @@ export class AbsenceCalendarV4
   private selectedAbsenceType = "";
   private selectedAction = "";
   private selectedRecordId = "";
+  // Monotonically-increasing token so Canvas App OnChange fires even when
+  // the same action is repeated (e.g. two consecutive "add" operations).
+  private selectedEventId = "";
 
   constructor() {
     // Empty
@@ -195,6 +198,9 @@ export class AbsenceCalendarV4
       this.selectedAbsenceType = payload.absenceType;
       this.selectedAction = payload.action;
       this.selectedRecordId = payload.recordId;
+      // Always-unique token: guarantees OnChange fires for repeated same-action
+      // events (e.g. user adds two "Urlaub" entries back-to-back).
+      this.selectedEventId = Date.now().toString();
       this.notifyOutputChanged();
     };
 
@@ -219,6 +225,7 @@ export class AbsenceCalendarV4
       selectedAbsenceType: this.selectedAbsenceType,
       selectedAction: this.selectedAction,
       selectedRecordId: this.selectedRecordId,
+      selectedEventId: this.selectedEventId,
     };
   }
 
