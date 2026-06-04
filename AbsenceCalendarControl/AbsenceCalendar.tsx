@@ -170,10 +170,11 @@ const S = {
     flexDirection: "column" as const,
   } as React.CSSProperties,
 
-  contentScroll: {
+  gridScroll: {
     flex: 1,
     overflowY: "auto" as const,
-    overflowX: "hidden" as const,
+    overflowX: "auto" as const,
+    minHeight: 0,
   } as React.CSSProperties,
 
   toolbar: {
@@ -247,7 +248,6 @@ const S = {
   } as React.CSSProperties,
   navTitle: { fontSize: 15, fontWeight: 600, color: "#222" } as React.CSSProperties,
 
-  calWrap: { overflowX: "auto" as const },
   table: {
     width: "100%",
     borderCollapse: "collapse" as const,
@@ -341,7 +341,21 @@ const S = {
     borderTop: "1.5px solid #eee",
     alignItems: "center" as const,
     flexWrap: "wrap" as const,
+    flex: "0 0 auto" as const,
   },
+
+  // Sticky header helpers — applied per-cell for reliable cross-browser behaviour
+  theadTh: { position: "sticky" as const, top: 0, zIndex: 2 } as React.CSSProperties,
+  // Corner cells: sticky in both axes (higher z-index to sit above day-column headers)
+  stickyCol0:   { position: "sticky" as const, left: 0,   zIndex: 3 } as React.CSSProperties,
+  stickyCol180: { position: "sticky" as const, left: 180, zIndex: 3 } as React.CSSProperties,
+  stickyCol236: { position: "sticky" as const, left: 236, zIndex: 3 } as React.CSSProperties,
+  stickyCol292: { position: "sticky" as const, left: 292, zIndex: 3 } as React.CSSProperties,
+  // Body fixed-column cells: above scrolling day cells, below header
+  stickyTd0:   { position: "sticky" as const, left: 0,   zIndex: 1 } as React.CSSProperties,
+  stickyTd180: { position: "sticky" as const, left: 180, zIndex: 1 } as React.CSSProperties,
+  stickyTd236: { position: "sticky" as const, left: 236, zIndex: 1 } as React.CSSProperties,
+  stickyTd292: { position: "sticky" as const, left: 292, zIndex: 1 } as React.CSSProperties,
   legendItem: {
     display: "flex" as const,
     alignItems: "center" as const,
@@ -794,9 +808,7 @@ export const AbsenceCalendar: React.FC<IAbsenceCalendarProps> = ({
 
   return (
     <div style={cardStyle}>
-      {/* ── Scrollable content area ── */}
-      <div style={S.contentScroll}>
-        {/* Toolbar */}
+      {/* Toolbar */}
         <div style={S.toolbar}>
           <button
             style={mode === "drag" ? S.modeBtnActive : S.modeBtn}
@@ -839,16 +851,16 @@ export const AbsenceCalendar: React.FC<IAbsenceCalendarProps> = ({
         </div>
 
         {/* Grid */}
-        <div style={S.calWrap}>
+        <div style={S.gridScroll}>
           <table style={S.table}>
             <thead>
               <tr>
-                <th style={S.thName}>Mitarbeiter</th>
-                <th style={S.thQuota}>Ges.</th>
-                <th style={S.thQuota}>Verbr.</th>
-                <th style={S.thQuota}>Rest</th>
+                <th style={{ ...S.thName, ...S.theadTh, ...S.stickyCol0 }}>Mitarbeiter</th>
+                <th style={{ ...S.thQuota, ...S.theadTh, ...S.stickyCol180 }}>Ges.</th>
+                <th style={{ ...S.thQuota, ...S.theadTh, ...S.stickyCol236 }}>Verbr.</th>
+                <th style={{ ...S.thQuota, ...S.theadTh, ...S.stickyCol292 }}>Rest</th>
                 {days.map((d, i) => (
-                  <th key={i} style={{ ...S.thDay, background: getCellBackground(dayStrings[i], d) }}>
+                  <th key={i} style={{ ...S.thDay, ...S.theadTh, background: getCellBackground(dayStrings[i], d) }}>
                     <span style={S.dayAbbr}>{DAY_ABBR[d.getDay()]}</span>
                     <span style={S.dayNum}>{d.getDate()}</span>
                   </th>
@@ -864,15 +876,16 @@ export const AbsenceCalendar: React.FC<IAbsenceCalendarProps> = ({
 
                 return (
                   <tr key={emp.id} style={S.trBorder}>
-                    <td style={S.tdName}>
+                    <td style={{ ...S.tdName, ...S.stickyTd0 }}>
                       <div style={S.empName}>{emp.name}</div>
                       <div style={S.empId}>{subtitle}</div>
                     </td>
-                    <td style={S.tdQuota}>{quota.annualQuota}</td>
-                    <td style={S.tdQuota}>{quota.usedDays}</td>
+                    <td style={{ ...S.tdQuota, ...S.stickyTd180 }}>{quota.annualQuota}</td>
+                    <td style={{ ...S.tdQuota, ...S.stickyTd236 }}>{quota.usedDays}</td>
                     <td
                       style={{
                         ...S.tdQuotaRest,
+                        ...S.stickyTd292,
                         color: quota.remainingDays > 0 ? "#4a7c3f" : "#e07070",
                       }}
                     >
@@ -966,7 +979,6 @@ export const AbsenceCalendar: React.FC<IAbsenceCalendarProps> = ({
             Feiertag
           </div>
         </div>
-      </div>
 
       {/* ── Drag-mode Add Popup (absolute, centered in card) ── */}
       {pendingAdd && (

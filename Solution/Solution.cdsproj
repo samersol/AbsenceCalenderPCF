@@ -49,7 +49,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="../power-pcf-demo.pcfproj" />
+    <ProjectReference Include="../AbsenceCalendarControl.pcfproj" />
   </ItemGroup>
 
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
