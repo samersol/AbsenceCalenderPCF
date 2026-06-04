@@ -41,7 +41,7 @@ function isDatasetReady(
   return true;
 }
 
-export class AbsenceCalendarV5
+export class AbsenceCalendarV6
   implements ComponentFramework.ReactControl<IInputs, IOutputs>
 {
   private notifyOutputChanged: () => void;
