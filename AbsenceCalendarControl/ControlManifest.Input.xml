@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="purelcustom" constructor="AbsenceCalendarV6" version="1.0.6" display-name-key="AbsenceCalendarV6" description-key="Absence Calendar V6" control-type="virtual" >
+  <control namespace="pur" constructor="AbsenceCalendarV6" version="1.0.6" display-name-key="AbsenceCalendarV6" description-key="Absence Calendar V6" control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
 
